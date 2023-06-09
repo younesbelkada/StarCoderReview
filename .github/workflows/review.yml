@@ -30,4 +30,4 @@ jobs:
           echo "LINK=https://github.com/${{ github.repository }}/pull/${{ github.event.issue.number }}" >> $GITHUB_ENV
           echo "GITHUB_TOKEN=${{ github.token }}" >> $GITHUB_ENV
           echo "GITHUB_ACTOR=${{ github.actor }}" >> $GITHUB_ENV
-          python review.py
+          python review.py --comment github.event.comment
