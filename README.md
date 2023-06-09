@@ -10,7 +10,7 @@ If you want a PR summarized and you are a whitelisted user, go to the chat of th
 
 1. Add the following workflow
 ```yaml
-name: Review PR with StarChat model
+name: Review PR with OpenAI GPT model
 
 on:
   issue_comment:
@@ -20,9 +20,12 @@ jobs:
   pr_commented:
     if: |
       github.event.issue.pull_request &&
-      startsWith(github.event.comment.body, 'openai')
+      startsWith(github.event.comment.body, 'starchat')
     name: Review PR
     runs-on: ubuntu-latest
+    permissions: 
+      pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
@@ -38,12 +41,18 @@ jobs:
           pip install -r requirements.txt
       - name: Review PR and make comment
         run: |
-          source .env/bin/activate
+          source .env/bin/activate	
           echo "LINK=https://github.com/${{ github.repository }}/pull/${{ github.event.issue.number }}" >> $GITHUB_ENV
-          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
           echo "GITHUB_TOKEN=${{ github.token }}" >> $GITHUB_ENV
           echo "GITHUB_ACTOR=${{ github.actor }}" >> $GITHUB_ENV
-          python review.py
+          python review.py --comment github.event.comment > output.log
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: output.log
+      - name: Clean up output
+        run: |
+          rm output.log
 ```
 
 2. Add the review.py script to the root of your repository and make sure to populate the WHITELIST variable with a list of usernames you want to be able to call the bot
