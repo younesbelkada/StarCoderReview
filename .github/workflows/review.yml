@@ -1,12 +1,13 @@
 name: Review PR with OpenAI GPT model
 
+permissions: 
+   pull-requests: write 
+
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  permissions: 
-    pull-requests: write 
   pr_commented:
     if: |
       github.event.issue.pull_request &&
