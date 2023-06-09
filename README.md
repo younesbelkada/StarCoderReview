@@ -1,6 +1,6 @@
 # StarChatReview 🤖🔍
 
-Get OpenAI GPT models to summarize your PR's and suggest changes by calling it in the pull request comments!
+Get StarChat model to summarize your PR's and suggest changes by calling it in the pull request comments!
 
 ## Usage:
 
