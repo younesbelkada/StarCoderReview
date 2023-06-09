@@ -1,8 +1,5 @@
 name: Review PR with OpenAI GPT model
 
-permissions: 
-   pull-requests: write 
-
 on:
   issue_comment:
     types: [created]
@@ -14,6 +11,9 @@ jobs:
       startsWith(github.event.comment.body, 'starchat')
     name: Review PR
     runs-on: ubuntu-latest
+    permissions: 
+      pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
