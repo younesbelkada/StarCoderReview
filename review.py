@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import argparse
 from text_generation import Client
 
 
@@ -10,7 +11,10 @@ MAX_NUM_TOKENS = 8192
 SYS_MESSAGE="Below is a conversation between a human user and a helpful AI coding assistant.\n\n"
 QUESTION = "Can you summarize this GitHub Pull Request for me and suggest possible improvements?"
 
-def get_review(hf_api_key=None):
+argparser = argparse.ArgumentParser()
+argparser.add_argument("--comment", type=str, required=True)
+
+def get_review(comment, hf_api_key=None):
   github_env = os.getenv("GITHUB_ENV")
   with open(github_env, "r") as f:
     variables = dict([line.split("=") for line in f.read().splitlines()])
@@ -18,7 +22,10 @@ def get_review(hf_api_key=None):
   if variables["GITHUB_ACTOR"] not in WHITELIST: # only run review for whitelisted users
       return
 
-  pr_link = variables["LINK"]
+  repo_name = comment.split("https://github.com/")[1].split("/pull/")[0]
+  pr_number = comment.split("https://github.com/")[1].split("/pull/")[1].split(")")[0]
+  pr_link = f"https://github.com/{repo_name}/pull/{pr_number}"
+
   if hf_api_key is None:
     hf_api_key = os.getenv("HF_HUB_KEY")
 
@@ -58,4 +65,6 @@ def get_review(hf_api_key=None):
 
 
 if __name__ == "__main__":
-  get_review()
+  args = argparser.parse_args()
+  comment = args.comment
+  get_review(comment)
