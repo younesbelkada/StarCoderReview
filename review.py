@@ -45,23 +45,25 @@ def get_review(comment, hf_api_key=None):
   response = client.generate(prompt)
   review = response.generated_text
 
-  ACCESS_TOKEN = variables["GITHUB_TOKEN"]
-  headers = {
-    'Accept': 'application/vnd.github+json',
-    'Authorization': f'Bearer {ACCESS_TOKEN}',
-    'Content-Type': 'application/x-www-form-urlencoded',
-  }
+  print(review)
 
-  data = {"body": review}
-  data = json.dumps(data)
+  # ACCESS_TOKEN = variables["GITHUB_TOKEN"]
+  # headers = {
+  #   'Accept': 'application/vnd.github+json',
+  #   'Authorization': f'Bearer {ACCESS_TOKEN}',
+  #   'Content-Type': 'application/x-www-form-urlencoded',
+  # }
+
+  # data = {"body": review}
+  # data = json.dumps(data)
 
 
-  OWNER = pr_link.split("/")[-4]
-  REPO = pr_link.split("/")[-3]
-  PR_NUMBER = pr_link.split("/")[-1]
+  # OWNER = pr_link.split("/")[-4]
+  # REPO = pr_link.split("/")[-3]
+  # PR_NUMBER = pr_link.split("/")[-1]
 
-  response = requests.post(f'https://api.github.com/repos/{OWNER}/{REPO}/issues/{PR_NUMBER}/comments', headers=headers, data=data)
-  print(response.json())
+  # response = requests.post(f'https://api.github.com/repos/{OWNER}/{REPO}/issues/{PR_NUMBER}/comments', headers=headers, data=data)
+  # print(response.json())
 
 
 if __name__ == "__main__":
