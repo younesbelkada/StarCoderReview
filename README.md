@@ -10,7 +10,7 @@ If you want a PR summarized and you are a whitelisted user, go to the chat of th
 
 1. Add the following workflow
 ```yaml
-name: Review PR with OpenAI GPT model
+name: Review PR with StarChat model
 
 on:
   issue_comment:
